@@ -1,7 +1,6 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
 }
 
@@ -25,21 +24,22 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.example.target_app"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 34
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = "11"
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.target_app"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        minSdk = 23
+        targetSdk = 34
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
         multiDexEnabled = true
@@ -47,28 +47,42 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file("debug.keystore")
+            storeFile file("${System.getenv('HOME')}/.android/debug.keystore")
+            storePassword "android"
             keyAlias "androiddebugkey"
             keyPassword "android"
-            storePassword "android"
         }
     }
 
     buildTypes {
+        debug {
+            signingConfig = signingConfigs.debug
+        }
         release {
             signingConfig = signingConfigs.debug
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled = false
+            shrinkResources = false
         }
     }
 
     packagingOptions {
         exclude 'META-INF/proguard/androidx-*.pro'
         exclude 'META-INF/*.kotlin_module'
+        exclude 'META-INF/MANIFEST.MF'
     }
 
     bundle {
         enableSplit = false
+    }
+
+    lint {
+        checkReleaseBuilds = false
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "target_app_release.apk"
+        }
     }
 }
 
