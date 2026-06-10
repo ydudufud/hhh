@@ -3,9 +3,17 @@ workflows:
     name: Target App Build
     environment:
       flutter: 3.22.0
+      android_signing:
+        - keystore_reference
     scripts:
-      - flutter pub get
-      - flutter build apk --release
+      - name: Build APK
+        script: |
+          flutter clean
+          flutter pub get
+          flutter build apk --release --verbose
     artifacts:
-      - build/app/outputs/flutter-apk/app-release.apk
-# Retry build trigger
+      - build/app/outputs/flutter-apk/**/*.apk
+    publishing:
+      email:
+        recipients:
+          - $PERSONAL_EMAIL

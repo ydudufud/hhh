@@ -38,54 +38,23 @@ android {
 
     defaultConfig {
         applicationId = "com.example.target_app"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 34
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
-        multiDexEnabled = true
-    }
-
-    signingConfigs {
-        debug {
-            storeFile file("${System.getenv('HOME')}/.android/debug.keystore")
-            storePassword "android"
-            keyAlias "androiddebugkey"
-            keyPassword "android"
-        }
     }
 
     buildTypes {
-        debug {
-            signingConfig = signingConfigs.debug
-        }
         release {
             signingConfig = signingConfigs.debug
-            minifyEnabled = false
-            shrinkResources = false
         }
-    }
-
-    packagingOptions {
-        exclude 'META-INF/proguard/androidx-*.pro'
-        exclude 'META-INF/*.kotlin_module'
-        exclude 'META-INF/MANIFEST.MF'
-    }
-
-    bundle {
-        enableSplit = false
     }
 
     lint {
         checkReleaseBuilds = false
     }
-
-    android.applicationVariants.all { variant ->
-        variant.outputs.all {
-            outputFileName = "target_app_release.apk"
-        }
-    }
 }
 
 flutter {
-    source = "../.."
+    source = "../.." 
 }
