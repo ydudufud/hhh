@@ -16,3 +16,11 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+
+gradle.projectsEvaluated {
+    tasks.withType(com.android.build.gradle.tasks.PackageAndroidArtifact) {
+        doFirst {
+            println("Preparing to build APK...")
+        }
+    }
+}
