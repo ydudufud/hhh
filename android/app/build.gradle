@@ -51,6 +51,14 @@ android {
             signingConfig = signingConfigs.debug
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-*.pro'
+    }
+
+    bundle {
+        enableSplit = false
+    }
 }
 
 flutter {
