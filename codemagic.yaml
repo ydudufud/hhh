@@ -1,0 +1,10 @@
+workflows:
+  target-app-build:
+    name: Target App Build
+    environment:
+      flutter: 3.22.0
+    scripts:
+      - flutter pub get
+      - flutter build apk --release
+    artifacts:
+      - build/app/outputs/flutter-apk/app-release.apk
